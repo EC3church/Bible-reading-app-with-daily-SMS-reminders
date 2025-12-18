@@ -1,40 +1,32 @@
-export async function handler(event) {
-  const to = (event.queryStringParameters?.to || "").trim();
+export async function handler() {
+  const apiKey = process.env.MTA_API_KEY;
 
-  // SAFETY: if no phone number is provided, do NOT send to anyone.
-  if (!to) {
+  if (!apiKey) {
     return {
-      statusCode: 200,
-      body: JSON.stringify({
-        ok: true,
-        sent: false,
-        reason: "No ?to= provided. Nothing sent (safe mode).",
-        example: "?to=+13105551234",
-      }),
+      statusCode: 500,
+      body: JSON.stringify({ ok: false, error: "Missing MTA_API_KEY" }),
     };
   }
 
-  const apiKey = process.env.MTA_API_KEY;
-  if (!apiKey) {
-    return { statusCode: 500, body: JSON.stringify({ ok: false, error: "Missing MTA_API_KEY" }) };
-  }
+  const message =
+    "📖 Bible in a Year — Today’s Reading\n\nOpen the app to see today’s scripture and audio.";
 
-  const message = "TEST ✅ Bible in a Year: your daily reading reminder is working.";
-
-  const resp = await fetch("https://api.mobile-text-alerts.com/v3/send", {
+  const response = await fetch("https://api.mobile-text-alerts.com/messages", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
       Authorization: `Bearer ${apiKey}`,
-      // Optional but recommended to prevent accidental duplicates if you retry:
-      "X-Request-Id": `bible-${Date.now()}`,
     },
     body: JSON.stringify({
-      subscribers: [to],   // <-- send to ONE phone number
       message,
+      groups: [288518], // ✅ ONLY this group receives the text
     }),
   });
 
-  const data = await resp.json().catch(() => ({}));
-  return { statusCode: resp.ok ? 200 : resp.status, body: JSON.stringify({ ok: resp.ok, data }) };
+  const data = await response.json().catch(() => ({}));
+
+  return {
+    statusCode: response.ok ? 200 : response.status,
+    body: JSON.stringify({ ok: response.ok, data }),
+  };
 }
