@@ -21,18 +21,20 @@ export async function handler(event) {
 
   const message = "TEST ✅ Bible in a Year: your daily reading reminder is working.";
 
-  // IMPORTANT: keep the exact MTA endpoint/method you already had working.
-  // If your previous code called a different MTA URL, paste THAT working URL here.
-  const resp = await fetch("PUT_YOUR_WORKING_MTA_SEND_URL_HERE", {
+  const resp = await fetch("https://api.mobile-text-alerts.com/v3/send", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
       Authorization: `Bearer ${apiKey}`,
+      // Optional but recommended to prevent accidental duplicates if you retry:
+      "X-Request-Id": `bible-${Date.now()}`,
     },
-    body: JSON.stringify({ to, message }),
+    body: JSON.stringify({
+      subscribers: [to],   // <-- send to ONE phone number
+      message,
+    }),
   });
 
   const data = await resp.json().catch(() => ({}));
   return { statusCode: resp.ok ? 200 : resp.status, body: JSON.stringify({ ok: resp.ok, data }) };
 }
-
