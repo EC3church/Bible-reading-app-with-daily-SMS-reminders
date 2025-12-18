@@ -19,7 +19,7 @@ export async function handler() {
     },
     body: JSON.stringify({
       message,
-      groups: [288518], // ✅ ONLY this group receives the text
+      groupIds: [288518], // ✅ ONLY this group receives the text
     }),
   });
 
