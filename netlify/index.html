@@ -1,12 +1,54 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Bible in a Year</title>
-  </head>
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.jsx"></script>
-  </body>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Bible in One Year</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #111;
+      color: #fff;
+      padding: 20px;
+      max-width: 600px;
+      margin: auto;
+    }
+    h1 { color: #f5c542; }
+    .card {
+      background: #1e1e1e;
+      padding: 16px;
+      border-radius: 8px;
+      margin-top: 16px;
+    }
+    button {
+      background: #f5c542;
+      border: none;
+      padding: 10px 16px;
+      font-size: 16px;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>📖 Bible in One Year</h1>
+
+  <div class="card">
+    <h2>Today’s Reading</h2>
+    <p><strong>Revelation 4–8</strong></p>
+    <button>Mark as Read ✅</button>
+  </div>
+
+  <div class="card">
+    <h2>🎧 Audio</h2>
+    <audio controls src="/public/audio/sample.mp3"></audio>
+  </div>
+
+  <div class="card">
+    <h2>🙏 Reflection</h2>
+    <textarea rows="4" style="width:100%;"></textarea>
+  </div>
+
+</body>
 </html>
